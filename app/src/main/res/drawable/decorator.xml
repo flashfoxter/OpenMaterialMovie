@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+
+    <!-- TODO: do not use drawable as decorator  -->
+
+    <!--
+    <solid android:color="@color/divider_light" />
+    <size android:height="1dp"/>
+    -->
+</shape>
