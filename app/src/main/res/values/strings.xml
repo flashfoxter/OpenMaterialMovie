@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">OpenMaterialMovie</string>
+
+    <string name="common_buttonOk">OK</string>
+    <string name="common_buttonDelete">Delete</string>
+    <string name="common_buttonCancel">Cancel</string>
+    <string name="common_error">Error</string>
+    <string name="common_unexpectedError">An unexpected error has occurred. Please try again or contact support if the problem persists.</string>
+
+    <string name="title">Title</string>
+
 </resources>

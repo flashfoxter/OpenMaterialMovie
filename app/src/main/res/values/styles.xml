@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Color bor background -->
+        <item name="android:background">@color/white</item>
+        <!-- Color for title text (and buttons, but they colored in code) -->
+        <item name="android:textColor">@color/black</item>
+        <!-- Color for text inside alert aka description -->
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
 </resources>

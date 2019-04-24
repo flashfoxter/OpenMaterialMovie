@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2019. Levashkin Konstantin.
+  -->
+
+<resources>
+
+    <declare-styleable name="CoreRecycler">
+        <attr name="recycler_bottom_padding" format="boolean" />
+        <attr name="recycler_bottom_padding_value" format="integer" />
+    </declare-styleable>
+
+</resources>

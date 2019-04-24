@@ -16,13 +16,64 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
+    def version_lombok = "1.16.20"
+    def version_annimon = "1.2.0"
+    def version_retrofit = "2.5.0"
+    def version_lifecycle = "1.1.1"
+    def version_dagger = "2.22.1"
+    def version_support = "28.0.0"
+    def version_exoplayer = "2.9.6"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+
+    implementation "com.android.support:appcompat-v7:$version_support"
+    implementation "com.android.support:cardview-v7:$version_support"
+    implementation "com.android.support:recyclerview-v7:$version_support"
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //Lombock
+    compileOnly "org.projectlombok:lombok:$version_lombok"
+    annotationProcessor "org.projectlombok:lombok:$version_lombok"
+
+    // Annimon
+    implementation "com.annimon:stream:$version_annimon"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-simplexml:$version_retrofit"
+
+    //Lifecycle
+    implementation "android.arch.lifecycle:extensions:$version_lifecycle"
+    implementation "android.arch.lifecycle:viewmodel:$version_lifecycle"
+
+    //Logger
+    implementation 'com.orhanobut:logger:2.2.0'
+
+    //Dagger
+    implementation "com.google.dagger:dagger-android:$version_dagger"
+    implementation "com.google.dagger:dagger-android-support:$version_dagger"
+    annotationProcessor "com.google.dagger:dagger-compiler:$version_dagger"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$version_dagger"
+
+    //Exoplayer
+    implementation "com.google.android.exoplayer:exoplayer:$version_exoplayer"
+
+    //Image loader
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
