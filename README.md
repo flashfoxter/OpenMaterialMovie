@@ -1,4 +1,4 @@
-# OpenMeterialMovie
+# OpenMaterialMovie
 
 # Just "No more 8 hours job interview test project"
 
