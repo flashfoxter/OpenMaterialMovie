@@ -76,4 +76,7 @@ dependencies {
     //Image loader
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //Exoplayer Youtube extractor
+    implementation 'com.github.haarigerharald:android-youtubeextractor:v1.8.0'
+
 }

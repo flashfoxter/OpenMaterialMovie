@@ -6,9 +6,11 @@ package com.lk.openmaterialmovie.ui.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,29 +19,33 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
 import com.lk.openmaterialmovie.dto.TrailersResponse;
+import com.lk.openmaterialmovie.helpers.Ui;
 
 import java.text.MessageFormat;
 
+import at.huber.youtubeExtractor.VideoMeta;
+import at.huber.youtubeExtractor.YouTubeExtractor;
+import at.huber.youtubeExtractor.YtFile;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
 
 public class FragmentMovieDetails extends BaseFragment {
 
-    private final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
     @Getter
     @Setter
     private FragmentMovieDetailsViewModel viewModel;
     private FragmentMovieDetailsBinding binding;
     private SimpleExoPlayer player;
+    public static final String EXOPLAYER = "exoplayer";
+    private final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
 
     @Nullable
     @Override
@@ -61,7 +67,19 @@ public class FragmentMovieDetails extends BaseFragment {
             if (results.length > 0) {
                 // TODO: 2019-04-24 Check is type youtube
                 //initializeWebView(YOUTUBE_URL, results[0].getKey());
-                initializePlayer(YOUTUBE_URL, results[0].getKey());
+                //initializePlayer(YOUTUBE_URL, results[0].getKey());
+                String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, results[0].getKey());
+                new YouTubeExtractor(getContext()) {
+                    @Override
+                    public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
+                        if (ytFiles != null) {
+                            int itag = 22;
+                            String downloadUrl = ytFiles.get(itag).getUrl();
+                            initializePlayer(downloadUrl);
+                        }
+                    }
+                }.extract(urlWithKey, true, true);
+
             }
         });
     }
@@ -72,23 +90,33 @@ public class FragmentMovieDetails extends BaseFragment {
         //webView.loadUrl(MessageFormat.format("{0}{1}", url, key));
     }
 
-    private void initializePlayer(String url, String key) {
-        val userAgent = "exoplayer";
-
-
+    private void initializePlayer(String url) {
         DefaultRenderersFactory defaultRenderersFactory = new DefaultRenderersFactory(getContext());
         DefaultTrackSelector defaultTrackSelector = new DefaultTrackSelector();
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl();
         player = ExoPlayerFactory.newSimpleInstance(getContext(), defaultRenderersFactory, defaultTrackSelector, defaultLoadControl);
         binding.playerView.setPlayer(player);
+        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(Ui.getActivity(), EXOPLAYER, defaultBandwidthMeter);
+        final MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(url));
+        player.prepare(mediaSource, true, false);
+        player.setPlayWhenReady(true);
+    }
 
-        String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, key);
-        Uri uri = Uri.parse(urlWithKey);
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            player.release();
+        }
+    }
 
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
-        DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        final MediaSource videoSource = new ExtractorMediaSource(uri, dataSourceFactory, extractorsFactory, null, null);
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            player.release();
+        }
 
-        player.prepare(videoSource, true, false);
     }
 }
