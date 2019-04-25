@@ -54,4 +54,10 @@ public class Navigate {
         fragmentTransaction.replace(Ui.getActivity().findViewById(R.id.fragment_container).getId(), toFragment);
         fragmentTransaction.commit();
     }
+
+    public static void replaceChildFragment(int containerToReplace, BaseFragment parentFragment, BaseFragment childFragment) {
+        FragmentTransaction transaction = parentFragment.getChildFragmentManager().beginTransaction();
+        transaction.add(containerToReplace, childFragment);
+        transaction.commit();
+    }
 }

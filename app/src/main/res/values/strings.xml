@@ -8,5 +8,6 @@
     <string name="common_unexpectedError">An unexpected error has occurred. Please try again or contact support if the problem persists.</string>
 
     <string name="title">Title</string>
+    <string name="empty_state_movie">Please select movie from lsit</string>
 
 </resources>

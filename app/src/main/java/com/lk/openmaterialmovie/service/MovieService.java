@@ -14,10 +14,13 @@ import retrofit2.http.Query;
 
 public interface MovieService {
 
-    // TODO: 2019-04-24 remove key
+
+    @GET("movie/popular")
+    Call<MovieListResponse> getPopular(@Query("api_key") String apiKey, @Query("page") Integer page);
+
     //Default 28
     @GET("discover/movie")
-    Call<MovieListResponse> getMoviesByGenres(@Query("with_genres") Integer genreId, @Query("api_key") String apiKey);
+    Call<MovieListResponse> getMoviesByGenres(@Query("with_genres") Integer genreId, @Query("api_key") String apiKey, @Query("page") Integer page);
 
     @GET("discover/movie")
     Call<MovieListResponse> getMoviesByPopularity(@Query("sort_by") String sortBy, @Query("api_key") String apiKey);

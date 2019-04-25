@@ -7,8 +7,12 @@ import com.lk.openmaterialmovie.network.MutableResponse;
 
 public class FragmentMoviesByGenreViewModel extends BaseViewModel {
 
+    MutableResponse getPopular(int page) {
+        return call(ServiceFactory.GET.getMovieService().getPopular(Constants.KEY_THE_MOVIE_DB, page));
+    }
+
     MutableResponse getMoviesByGenre(int page) {
-        return call(ServiceFactory.GET.getMovieService().getMoviesByGenres(Constants.DEFAULT_GENRE, Constants.KEY_THE_MOVIE_DB));
+        return call(ServiceFactory.GET.getMovieService().getMoviesByGenres(Constants.DEFAULT_GENRE, Constants.KEY_THE_MOVIE_DB, page));
     }
 
     MutableResponse getMoviesByPopular() {

@@ -14,10 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lk.openmaterialmovie.R;
+import com.lk.openmaterialmovie.helpers.Provider;
+
+import static com.lk.openmaterialmovie.navigator.Navigate.replaceChildFragment;
 
 public class FragmentMoviesByGenreTablet extends BaseFragment {
 
-    //private FragmentMoviesByGenreTablet binding;
+    private FragmentMoviesByGenre fragmentMoviesByGenre;
+    private FragmentMovieDetails fragmentMovieDetails;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +32,21 @@ public class FragmentMoviesByGenreTablet extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_by_genre_tablet, container, false);
+        initByGenres();
         return binding.getRoot();
+    }
+
+    private void initByGenres() {
+        fragmentMoviesByGenre = new FragmentMoviesByGenre();
+        // TODO: 2019-04-25 Implement default selection
+        fragmentMoviesByGenre.setSelectedId(selectedId -> {
+            initDetails(selectedId);
+        });
+        replaceChildFragment(R.id.container_list, this, fragmentMoviesByGenre);
+    }
+
+    private void initDetails(int selectedId) {
+        fragmentMovieDetails = (FragmentMovieDetails) Provider.getFragmentMovieDetails(selectedId);
+        replaceChildFragment(R.id.container_details, this, fragmentMovieDetails);
     }
 }

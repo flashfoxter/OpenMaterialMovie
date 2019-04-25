@@ -91,6 +91,7 @@ public class CoreRecycler extends RecyclerView {
                 }
             }
         };
+        addOnScrollListener(scrollListener);
     }
 
     public <T, E extends BasicViewHolder> GenericAdapter<T, E> initList(Class<E> viewHolderClass,

@@ -81,11 +81,14 @@ public class FragmentMovieDetails extends BaseFragment {
                     new YouTubeExtractor(getContext()) {
                         @Override
                         public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
-                            if (ytFiles != null) {
-                                final int tag = 22;
-                                String downloadUrl = ytFiles.get(tag).getUrl();
-                                initializePlayer(downloadUrl);
+                            if (isAdded()) {
+                                if (ytFiles != null) {
+                                    final int tag = 22;
+                                    String downloadUrl = ytFiles.get(tag).getUrl();
+                                    initializePlayer(downloadUrl);
+                                }
                             }
+
                         }
                     }.extract(urlWithKey, true, true);
                 }
@@ -108,24 +111,44 @@ public class FragmentMovieDetails extends BaseFragment {
         player.setPlayWhenReady(true);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        //playerRelease();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //playerRelease();
-    }
-
     private void playerRelease() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             if (player != null) {
                 player.release();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        playerRelease();
+    }
+
+    private void pausePlayer() {
+        if (player != null) {
+            player.setPlayWhenReady(false);
+            player.getPlaybackState();
+        }
+    }
+
+    private void startPlayer() {
+        if (player != null) {
+            player.setPlayWhenReady(true);
+            player.getPlaybackState();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pausePlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startPlayer();
     }
 
 }
