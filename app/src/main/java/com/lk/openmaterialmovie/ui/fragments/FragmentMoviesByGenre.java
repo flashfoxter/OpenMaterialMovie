@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMoviesByGenreBinding;
+import com.lk.openmaterialmovie.dto.MovieDto;
 import com.lk.openmaterialmovie.dto.MovieListResponse;
 import com.lk.openmaterialmovie.enums.DecoratorType;
 import com.lk.openmaterialmovie.enums.PlaceHolderType;
@@ -35,8 +36,8 @@ public class FragmentMoviesByGenre extends BaseFragment {
     private Consumer<Integer> selectedId;
     private FragmentMoviesByGenreViewModel viewModel;
     private FragmentMoviesByGenreBinding binding;
-    private GenericAdapter<MovieListResponse.MovieListResponseResults, MoviesViewHolder> adapter;
-    private List<MovieListResponse.MovieListResponseResults> movieListResponseResults;
+    private GenericAdapter<MovieDto, MoviesViewHolder> adapter;
+    private List<MovieDto> movieListResponseResults;
     private LinearLayoutManager linearLayoutManager;
 
 
@@ -86,7 +87,7 @@ public class FragmentMoviesByGenre extends BaseFragment {
                             holderBind.b.imgCover.load(item.getPoster_path(), PlaceHolderType.MOVIE);
                         }, linearLayoutManager, DecoratorType.NO_TOP);
             } else {
-                List<MovieListResponse.MovieListResponseResults> results = ((MovieListResponse) movies.getData()).getResults();
+                List<MovieDto> results = ((MovieListResponse) movies.getData()).getResults();
                 movieListResponseResults.addAll(results);
                 adapter.notifyItemRangeInserted(adapter.getItems().size(), results.size() - 1);
             }

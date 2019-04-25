@@ -27,6 +27,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
+import com.lk.openmaterialmovie.dto.TrailerDto;
 import com.lk.openmaterialmovie.dto.TrailersResponse;
 import com.lk.openmaterialmovie.helpers.Ui;
 
@@ -74,7 +75,7 @@ public class FragmentMovieDetails extends BaseFragment {
         if (videoUrl == null || videoUrl.isEmpty()) {
             viewModel.getTrailers().onChangeOnce(this, trailers -> {
                 TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();
-                TrailersResponse.TrailersResponseResults[] results = trailersResponse.getResults();
+                TrailerDto[] results = trailersResponse.getResults();
                 if (results.length > 0) {
                     String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, results[0].getKey());
                     // TODO: 2019-04-25 Remove third party libs
