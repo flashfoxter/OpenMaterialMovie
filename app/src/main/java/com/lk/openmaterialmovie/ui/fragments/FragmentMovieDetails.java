@@ -4,6 +4,7 @@
 
 package com.lk.openmaterialmovie.ui.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
@@ -39,58 +40,62 @@ import lombok.Setter;
 
 public class FragmentMovieDetails extends BaseFragment {
 
+    public static final String EXOPLAYER = "exoplayer";
+
     @Getter
     @Setter
     private FragmentMovieDetailsViewModel viewModel;
     private FragmentMovieDetailsBinding binding;
     private SimpleExoPlayer player;
-    public static final String EXOPLAYER = "exoplayer";
     private final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
+    private String videoUrl;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false);
-        //initializePlayer();
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false);
+        }
         return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //viewModel = ViewModelProviders.of(this).get(FragmentMovieDetailsViewModel.class);
-        viewModel.getTrailers().onChangeOnce(this, trailers -> {
-            TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();
-            TrailersResponse.TrailersResponseResults[] results = trailersResponse.getResults();
-            //Play first trailer from collection
-            //https://www.youtube.com/watch?v=2LqzF5WauAw
-            if (results.length > 0) {
-                // TODO: 2019-04-24 Check is type youtube
-                //initializeWebView(YOUTUBE_URL, results[0].getKey());
-                //initializePlayer(YOUTUBE_URL, results[0].getKey());
-                String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, results[0].getKey());
-                new YouTubeExtractor(getContext()) {
-                    @Override
-                    public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
-                        if (ytFiles != null) {
-                            int itag = 22;
-                            String downloadUrl = ytFiles.get(itag).getUrl();
-                            initializePlayer(downloadUrl);
+        if (viewModel == null) {
+            viewModel = ViewModelProviders.of(this).get(FragmentMovieDetailsViewModel.class);
+        }
+        if (videoUrl == null || videoUrl.isEmpty()) {
+            viewModel.getTrailers().onChangeOnce(this, trailers -> {
+                TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();
+                TrailersResponse.TrailersResponseResults[] results = trailersResponse.getResults();
+                if (results.length > 0) {
+                    String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, results[0].getKey());
+                    // TODO: 2019-04-25 Remove third party libs
+                    new YouTubeExtractor(getContext()) {
+                        @Override
+                        public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
+                            if (ytFiles != null) {
+                                final int tag = 22;
+                                String downloadUrl = ytFiles.get(tag).getUrl();
+                                initializePlayer(downloadUrl);
+                            }
                         }
-                    }
-                }.extract(urlWithKey, true, true);
+                    }.extract(urlWithKey, true, true);
+                }
+            });
+        }
 
-            }
-        });
-    }
-
-    private void initializeWebView(String url, String key) {
-        //WebView webView = binding.we;
-        //webView.getSettings().setJavaScriptEnabled(true);
-        //webView.loadUrl(MessageFormat.format("{0}{1}", url, key));
     }
 
     private void initializePlayer(String url) {
+        videoUrl = url;
         DefaultRenderersFactory defaultRenderersFactory = new DefaultRenderersFactory(getContext());
         DefaultTrackSelector defaultTrackSelector = new DefaultTrackSelector();
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl();
@@ -98,7 +103,7 @@ public class FragmentMovieDetails extends BaseFragment {
         binding.playerView.setPlayer(player);
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(Ui.getActivity(), EXOPLAYER, defaultBandwidthMeter);
-        final MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(url));
+        final MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(videoUrl));
         player.prepare(mediaSource, true, false);
         player.setPlayWhenReady(true);
     }
@@ -106,17 +111,21 @@ public class FragmentMovieDetails extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            player.release();
-        }
+        //playerRelease();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            player.release();
-        }
-
+        //playerRelease();
     }
+
+    private void playerRelease() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            if (player != null) {
+                player.release();
+            }
+        }
+    }
+
 }

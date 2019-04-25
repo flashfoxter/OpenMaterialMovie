@@ -12,6 +12,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.helpers.Ui;
 import com.lk.openmaterialmovie.navigator.Navigator;
 import com.lk.openmaterialmovie.ui.preloader.Progress;
@@ -54,6 +55,20 @@ public class BaseActivity extends AppCompatActivity {
         progress.hide();
     }
 
+    public void showBack() {
+        // noinspection ConstantConditions
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    public void hideBack() {
+        // noinspection ConstantConditions
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+    }
+
+
     public static void riseAndShine(Activity activity) {
         KeyguardManager keyguardManager = (KeyguardManager) activity.getSystemService(KEYGUARD_SERVICE);
         assert keyguardManager != null;
@@ -68,6 +83,5 @@ public class BaseActivity extends AppCompatActivity {
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP | ON_AFTER_RELEASE, "Wakeup!");
         wakeLock.acquire();
         wakeLock.release();
-
     }
 }

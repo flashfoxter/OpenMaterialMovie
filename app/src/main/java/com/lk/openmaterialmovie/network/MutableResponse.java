@@ -19,6 +19,7 @@ import com.lk.openmaterialmovie.helpers.Dialogue;
  */
 public class MutableResponse extends MutableLiveData<RawResponse> {
 
+    // TODO: 2019-04-25 Check naming
     public void onChangeOnce(@NonNull LifecycleOwner owner, Consumer<RawResponse> responseSuccessConsumer) {
         observe(owner, r -> onBaseResponse(r, responseSuccessConsumer));
     }

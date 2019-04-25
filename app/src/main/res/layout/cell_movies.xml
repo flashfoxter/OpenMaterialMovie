@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <com.lk.openmaterialmovie.ui.widgets.images.BaseImage
                     android:id="@+id/img_cover"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

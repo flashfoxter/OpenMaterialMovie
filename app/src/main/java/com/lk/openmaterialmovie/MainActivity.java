@@ -14,7 +14,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progress = new ProgressImpl(findViewById(R.id.progress));
-        Navigate.toFragment(null, Provider.getFragmentMoviesByGenre());
+        if (savedInstanceState == null) {
+            Navigate.toFragment(null, Provider.getFragmentMoviesByGenre());
+        }
     }
 
     @Override

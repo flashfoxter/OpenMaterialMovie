@@ -20,6 +20,7 @@ import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.enums.DecoratorType;
 import com.lk.openmaterialmovie.factories.ComponentFactory;
 import com.lk.openmaterialmovie.helpers.Ui;
+import com.lk.openmaterialmovie.ui.EndlessRecyclerViewScrollListener;
 import com.lk.openmaterialmovie.ui.adapters.GenericAdapter;
 import com.lk.openmaterialmovie.ui.viewholders.BasicViewHolder;
 
@@ -34,6 +35,10 @@ public class CoreRecycler extends RecyclerView {
     @Setter
     protected Boolean bottomPadding;
     protected int bottomPaddingValueDp;
+    protected EndlessRecyclerViewScrollListener scrollListener;
+    @Getter
+    @Setter
+    Consumer<Integer> onLoadMore;
 
     public CoreRecycler(Context context) {
         super(context);
@@ -77,6 +82,17 @@ public class CoreRecycler extends RecyclerView {
         return gridLayoutManager;
     }
 
+    private void initPaging(LinearLayoutManager linearLayoutManager) {
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (onLoadMore != null) {
+                    onLoadMore.accept(page);
+                }
+            }
+        };
+    }
+
     public <T, E extends BasicViewHolder> GenericAdapter<T, E> initList(Class<E> viewHolderClass,
                                                                         List<T> adapterList,
                                                                         Consumer<E> onCreateViewHolder,
@@ -84,6 +100,7 @@ public class CoreRecycler extends RecyclerView {
                                                                         LinearLayoutManager layoutManager,
                                                                         DecoratorType decoratorType) {
 
+        initPaging(layoutManager);
         ComponentFactory.InitBuilder<T, E> initBuilder = new ComponentFactory.InitBuilder<T, E>()
                 .setViewHolderClass(viewHolderClass)
                 .setAdapterList(adapterList)
