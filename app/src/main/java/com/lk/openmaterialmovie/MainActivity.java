@@ -16,4 +16,12 @@ public class MainActivity extends BaseActivity {
         progress = new ProgressImpl(findViewById(R.id.progress));
         Navigate.toFragment(null, Provider.getFragmentMoviesByGenre());
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (BuildConfig.DEBUG) {
+            BaseActivity.riseAndShine(this);
+        }
+    }
 }

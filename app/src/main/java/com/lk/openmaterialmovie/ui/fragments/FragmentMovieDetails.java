@@ -5,19 +5,23 @@
 package com.lk.openmaterialmovie.ui.fragments;
 
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
 import com.lk.openmaterialmovie.dto.TrailersResponse;
@@ -26,6 +30,7 @@ import java.text.MessageFormat;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 
 public class FragmentMovieDetails extends BaseFragment {
 
@@ -55,27 +60,35 @@ public class FragmentMovieDetails extends BaseFragment {
             //https://www.youtube.com/watch?v=2LqzF5WauAw
             if (results.length > 0) {
                 // TODO: 2019-04-24 Check is type youtube
-                initializeWebView(YOUTUBE_URL, results[0].getKey());
+                //initializeWebView(YOUTUBE_URL, results[0].getKey());
+                initializePlayer(YOUTUBE_URL, results[0].getKey());
             }
         });
     }
 
     private void initializeWebView(String url, String key) {
-        WebView webView = binding.webView;
+        //WebView webView = binding.we;
         //webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl(MessageFormat.format("{0}{1}", url, key));
+        //webView.loadUrl(MessageFormat.format("{0}{1}", url, key));
     }
 
     private void initializePlayer(String url, String key) {
+        val userAgent = "exoplayer";
+
+
         DefaultRenderersFactory defaultRenderersFactory = new DefaultRenderersFactory(getContext());
         DefaultTrackSelector defaultTrackSelector = new DefaultTrackSelector();
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl();
         player = ExoPlayerFactory.newSimpleInstance(getContext(), defaultRenderersFactory, defaultTrackSelector, defaultLoadControl);
-        //binding.playerView.setPlayer(player);
+        binding.playerView.setPlayer(player);
 
-/*
-        final MediaSource videoSource = new ExtractorMediaSource(MessageFormat.format("{0}{1}", YOUTUBE_URL, ), new DefaultDataSourceFactory(), new DefaultExtractorsFactory(),
-                null, null);
-*/
+        String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, key);
+        Uri uri = Uri.parse(urlWithKey);
+
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
+        DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        final MediaSource videoSource = new ExtractorMediaSource(uri, dataSourceFactory, extractorsFactory, null, null);
+
+        player.prepare(videoSource, true, false);
     }
 }
