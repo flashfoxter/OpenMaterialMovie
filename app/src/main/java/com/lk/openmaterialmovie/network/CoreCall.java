@@ -7,8 +7,11 @@ package com.lk.openmaterialmovie.network;
 import android.support.annotation.NonNull;
 
 import com.annimon.stream.function.Consumer;
+import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.Strings;
 import com.lk.openmaterialmovie.enums.NetworkResponse;
+import com.lk.openmaterialmovie.helpers.Dialogue;
+import com.lk.openmaterialmovie.helpers.Ui;
 import com.lk.openmaterialmovie.log.Logger;
 import com.lk.openmaterialmovie.ui.activities.BaseActivity;
 
@@ -32,30 +35,28 @@ public class CoreCall<ResponseType> implements Callback<ResponseType> {
     private Consumer<RawResponse<ResponseType>> responseCommand;
     private Request request;
 
-    /*
+    /**
     Mock constructor only
      */
     public CoreCall() {
     }
 
     public CoreCall(Request request, Consumer<RawResponse<ResponseType>> responseCommand) {
-        //Ui.run(Ui.getActivity()::showProgress);
         showProgress();
         this.responseCommand = responseCommand;
         this.request = request;
     }
 
     private static void showProgress() {
-        // TODO: 2019-04-24 Implement
+        Ui.getActivity().progressShow();
     }
 
     private static void hideProgress() {
-        // TODO: 2019-04-24 Implement
+        Ui.getActivity().progressHide();
     }
 
     //TODO: Use this for error stream read later
     public static void onError(BaseActivity activity, HttpURLConnection httpURLConnection) throws IOException {
-        //activity.hideProgress();
         hideProgress();
         BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getErrorStream()));
         String line;
@@ -63,15 +64,11 @@ public class CoreCall<ResponseType> implements Callback<ResponseType> {
         while ((line = in.readLine()) != null) {
             output.append(line);
         }
-       /* activity.runOnUiThread(() -> {
-            Context context = UiContainer.getBaseContext();
-            DialogHelper.showSimplestDialog(context, context.getString(R.string.error), output.toString(), null);
-        });*/
+        activity.runOnUiThread(() -> Dialogue.show(Ui.getString(R.string.common_error), output.toString(), null));
     }
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull Throwable t) {
-        //Ui.run(Ui.getActivity()::hideProgress);
         hideProgress();
         RawResponse rawResponse = new RawResponse();
         boolean showSnackbarMessage = false;
@@ -107,7 +104,7 @@ public class CoreCall<ResponseType> implements Callback<ResponseType> {
         }
         String message = t.getMessage();
         rawResponse.setErrorString(message);
-        //Logg.w(S.Log.RestApi.RESPONSE_FAILURE + (message != null ? message : t.getClass()));
+        Logger.w(Strings.Log.RestApi.RESPONSE_FAILURE + (message != null ? message : t.getClass()));
         responseCommand.accept(rawResponse);
     }
 
@@ -174,7 +171,6 @@ public class CoreCall<ResponseType> implements Callback<ResponseType> {
         if (responseCommand != null) {
             responseCommand.accept(rawResponse);
         }
-        //Ui.run(Ui.getActivity()::hideProgress);
         hideProgress();
     }
 }

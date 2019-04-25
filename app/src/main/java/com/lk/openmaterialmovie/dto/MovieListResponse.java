@@ -6,41 +6,33 @@ package com.lk.openmaterialmovie.dto;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class MovieListResponse {
     private int page;
     private int total_pages;
     private List<MovieListResponseResults> results;
     private int total_results;
 
-    public int getPage() {
-        return this.page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getTotal_pages() {
-        return this.total_pages;
-    }
-
-    public void setTotal_pages(int total_pages) {
-        this.total_pages = total_pages;
-    }
-
-    public List<MovieListResponseResults> getResults() {
-        return this.results;
-    }
-
-    public void setResults(List<MovieListResponseResults> results) {
-        this.results = results;
-    }
-
-    public int getTotal_results() {
-        return this.total_results;
-    }
-
-    public void setTotal_results(int total_results) {
-        this.total_results = total_results;
+    @Data
+    @AllArgsConstructor
+    public class MovieListResponseResults {
+        private String overview;
+        private String original_language;
+        private String original_title;
+        private boolean video;
+        private String title;
+        private int[] genre_ids;
+        private String poster_path;
+        private String backdrop_path;
+        private String release_date;
+        private double vote_average;
+        private double popularity;
+        private int id;
+        private boolean adult;
+        private int vote_count;
     }
 }

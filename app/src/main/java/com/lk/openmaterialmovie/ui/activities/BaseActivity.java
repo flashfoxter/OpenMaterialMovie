@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.lk.openmaterialmovie.helpers.Ui;
 import com.lk.openmaterialmovie.navigator.Navigator;
+import com.lk.openmaterialmovie.ui.preloader.Progress;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class BaseActivity extends AppCompatActivity {
+
+    @Getter
+    @Setter
+    protected Progress progress;
 
     @Inject
     public Navigator navigator;
@@ -31,5 +36,13 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Ui.setActivity(this);
+    }
+
+    public void progressShow() {
+        progress.show();
+    }
+
+    public void progressHide() {
+        progress.hide();
     }
 }

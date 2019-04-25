@@ -20,8 +20,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
-import com.lk.openmaterialmovie.dto.trailers.TrailersResponse;
-import com.lk.openmaterialmovie.dto.trailers.TrailersResponseResults;
+import com.lk.openmaterialmovie.dto.TrailersResponse;
 
 import java.text.MessageFormat;
 
@@ -51,7 +50,7 @@ public class FragmentMovieDetails extends BaseFragment {
         //viewModel = ViewModelProviders.of(this).get(FragmentMovieDetailsViewModel.class);
         viewModel.getTrailers().onChangeOnce(this, trailers -> {
             TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();
-            TrailersResponseResults[] results = trailersResponse.getResults();
+            TrailersResponse.TrailersResponseResults[] results = trailersResponse.getResults();
             //Play first trailer from collection
             //https://www.youtube.com/watch?v=2LqzF5WauAw
             if (results.length > 0) {

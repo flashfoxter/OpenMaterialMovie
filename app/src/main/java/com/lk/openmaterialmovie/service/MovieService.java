@@ -5,7 +5,7 @@
 package com.lk.openmaterialmovie.service;
 
 import com.lk.openmaterialmovie.dto.MovieListResponse;
-import com.lk.openmaterialmovie.dto.trailers.TrailersResponse;
+import com.lk.openmaterialmovie.dto.TrailersResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

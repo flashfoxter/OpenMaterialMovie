@@ -13,7 +13,6 @@ import com.lk.openmaterialmovie.Constants;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMoviesByGenreBinding;
 import com.lk.openmaterialmovie.dto.MovieListResponse;
-import com.lk.openmaterialmovie.dto.MovieListResponseResults;
 import com.lk.openmaterialmovie.enums.DecoratorType;
 import com.lk.openmaterialmovie.helpers.Provider;
 import com.lk.openmaterialmovie.navigator.Navigate;
@@ -30,7 +29,7 @@ public class FragmentMoviesByGenre extends BaseFragment {
 
     private FragmentMoviesByGenreViewModel viewModel;
     private FragmentMoviesByGenreBinding binding;
-    private GenericAdapter<MovieListResponseResults, MoviesViewHolder> adapter;
+    private GenericAdapter<MovieListResponse.MovieListResponseResults, MoviesViewHolder> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class FragmentMoviesByGenre extends BaseFragment {
         viewModel = ViewModelProviders.of(this).get(FragmentMoviesByGenreViewModel.class);
         viewModel.getMoviesByGenre().onChangeOnce(this, movies -> {
             MovieListResponse movieListDto = (MovieListResponse) movies.getData();
-            List<MovieListResponseResults> resultList = movieListDto.getResults();
+            List<MovieListResponse.MovieListResponseResults> resultList = movieListDto.getResults();
             //noinspection CodeBlock2Expr
             adapter = binding.recyclerMovies.initList(MoviesViewHolder.class, resultList, holderCreate -> {
                 holderCreate.itemView.setOnClickListener(v -> {
