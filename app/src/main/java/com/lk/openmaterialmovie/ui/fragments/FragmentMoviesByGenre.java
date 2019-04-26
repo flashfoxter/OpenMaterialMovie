@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMoviesByGenreBinding;
 import com.lk.openmaterialmovie.dto.MovieDto;
-import com.lk.openmaterialmovie.dto.MovieListResponse;
 import com.lk.openmaterialmovie.enums.DecoratorType;
 import com.lk.openmaterialmovie.enums.PlaceHolderType;
 import com.lk.openmaterialmovie.helpers.Provider;
@@ -33,12 +32,12 @@ public class FragmentMoviesByGenre extends BaseFragment {
 
     @Getter
     @Setter
-    private Consumer<Integer> selectedId;
-    private FragmentMoviesByGenreViewModel viewModel;
+    private Consumer<MovieDto> onSelected;
+    private MoviesListViewModel viewModel;
     private FragmentMoviesByGenreBinding binding;
     private GenericAdapter<MovieDto, MoviesViewHolder> adapter;
-    private List<MovieDto> movieListResponseResults;
     private LinearLayoutManager linearLayoutManager;
+    private List<MovieDto> movieList;
 
 
     @Nullable
@@ -55,41 +54,37 @@ public class FragmentMoviesByGenre extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(FragmentMoviesByGenreViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
         getMovies(0);
     }
 
-    // TODO: 2019-04-25 Do i need to know about paging, from architecture point of view ?...
     private void getMovies(int tempPage) {
         //Kinda hack TheMovieDb begins from 1...
         int page = tempPage + 1;
-        viewModel.getPopular(page).onChangeOnce(this, movies -> {
+        viewModel.getMoviesList(page).observe(this, movies -> {
             if (page == 1) {
-                MovieListResponse movieListDto = (MovieListResponse) movies.getData();
-                movieListResponseResults = movieListDto.getResults();
-                adapter = binding.recyclerMovies.initList(MoviesViewHolder.class, movieListResponseResults, holderCreate ->
-                        {
-                            holderCreate.itemView.setOnClickListener(v -> {
-                                // TODO: 2019-04-25 Do not add if use Strategy pattern
-                                int id = adapter.getItems().get(holderCreate.getAdapterPosition()).getId();
-                                if (!Ui.isTablet()) {
-                                    Navigate.toFragment(this, Provider.getFragmentMovieDetails(id));
-                                } else {
-                                    if (selectedId != null) {
-                                        selectedId.accept(id);
+                movieList = movies;
+                adapter = binding.recyclerMovies.initList(MoviesViewHolder.class, movieList, holderCreate ->
+                                holderCreate.itemView.setOnClickListener(v -> {
+                                    // TODO: 2019-04-25 Do not add if, use Strategy pattern
+                                    MovieDto selectedMovie = adapter.getSelected(holderCreate);
+                                    if (!Ui.isTablet()) {
+                                        Navigate.toFragment(this, Provider.getFragmentMovieDetails(selectedMovie));
+                                    } else {
+                                        if (onSelected != null) {
+                                            onSelected.accept(selectedMovie);
+                                        }
                                     }
-                                }
-
-                            });
-                        },
+                                }),
                         (holderBind, item) -> {
                             holderBind.b.txtTitle.setText(item.getTitle());
                             holderBind.b.imgCover.load(item.getPoster_path(), PlaceHolderType.MOVIE);
                         }, linearLayoutManager, DecoratorType.NO_TOP);
             } else {
-                List<MovieDto> results = ((MovieListResponse) movies.getData()).getResults();
-                movieListResponseResults.addAll(results);
-                adapter.notifyItemRangeInserted(adapter.getItems().size(), results.size() - 1);
+                if (movies != null) {
+                    movieList.addAll(movies);
+                    adapter.notifyItemRangeInserted(adapter.getItems().size(), movies.size() - 1);
+                }
             }
         });
     }

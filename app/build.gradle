@@ -42,6 +42,7 @@ dependencies {
     def version_dagger = "2.22.1"
     def version_support = "28.0.0"
     def version_exoplayer = "2.9.6"
+    def version_aac = "1.1.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -93,7 +94,10 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
     //Room
-    implementation 'android.arch.persistence.room:runtime:1.1.1'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    implementation "android.arch.persistence.room:runtime:$version_aac"
+    annotationProcessor "android.arch.persistence.room:compiler:$version_aac"
+
+    // Paging
+    implementation "android.arch.paging:runtime:1.0.1"
 
 }

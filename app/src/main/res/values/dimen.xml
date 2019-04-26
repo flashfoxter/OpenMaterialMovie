@@ -22,6 +22,8 @@
     <dimen name="height_50">50dp</dimen>
     <dimen name="height_52">52dp</dimen>
     <dimen name="height_66">66dp</dimen>
+    <dimen name="height_200">300dp</dimen>
+    <dimen name="height_300">300dp</dimen>
 
     <dimen name="size_32">32dp</dimen>
     <dimen name="size_42">42dp</dimen>

@@ -8,12 +8,13 @@ package com.lk.openmaterialmovie.helpers;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
+import com.lk.openmaterialmovie.dto.MovieDto;
 import com.lk.openmaterialmovie.log.Logger;
 import com.lk.openmaterialmovie.ui.fragments.BaseFragment;
 import com.lk.openmaterialmovie.ui.fragments.FragmentMovieDetails;
-import com.lk.openmaterialmovie.ui.fragments.FragmentMovieDetailsViewModel;
 import com.lk.openmaterialmovie.ui.fragments.FragmentMoviesByGenre;
 import com.lk.openmaterialmovie.ui.fragments.FragmentMoviesByGenreTablet;
+import com.lk.openmaterialmovie.ui.fragments.MovieDetailsViewModel;
 
 import java.lang.reflect.Method;
 
@@ -76,24 +77,24 @@ public class Provider {
         }
     }
 
-    public static BaseFragment getFragmentMovieDetails(int movieId) {
+    public static BaseFragment getFragmentMovieDetails(MovieDto movieDto) {
         FragmentMovieDetails fragment = new FragmentMovieDetails();
-        FragmentViewModelFactory fragmentViewModelFactory = new FragmentViewModelFactory(movieId);
-        fragment.setViewModel(fragmentViewModelFactory.create(FragmentMovieDetailsViewModel.class));
+        FragmentViewModelFactory fragmentViewModelFactory = new FragmentViewModelFactory(movieDto);
+        fragment.setViewModel(fragmentViewModelFactory.create(MovieDetailsViewModel.class));
         return fragment;
     }
 
     public static class FragmentViewModelFactory implements ViewModelProvider.Factory {
-        private int mParam;
+        private MovieDto movieDto;
 
 
-        public FragmentViewModelFactory(int param) {
-            mParam = param;
+        public FragmentViewModelFactory(MovieDto movieDto) {
+            this.movieDto = movieDto;
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            return (T) new FragmentMovieDetailsViewModel(mParam);
+            return (T) new MovieDetailsViewModel(movieDto);
         }
     }
 }

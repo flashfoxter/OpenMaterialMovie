@@ -25,7 +25,7 @@ import lombok.Setter;
 @Entity //Room annotation after lombok only
 public class MovieDto {
     @PrimaryKey
-    public int id;
+    public Integer id;
 
     @ColumnInfo(name = "title")
     public String title;

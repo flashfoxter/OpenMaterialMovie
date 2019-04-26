@@ -6,6 +6,7 @@ package com.lk.openmaterialmovie.ui.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,10 +27,12 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.lk.openmaterialmovie.R;
+import com.lk.openmaterialmovie.Strings;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
 import com.lk.openmaterialmovie.dto.TrailerDto;
 import com.lk.openmaterialmovie.dto.TrailersResponse;
 import com.lk.openmaterialmovie.helpers.Ui;
+import com.lk.openmaterialmovie.log.Logger;
 
 import java.text.MessageFormat;
 
@@ -45,7 +48,7 @@ public class FragmentMovieDetails extends BaseFragment {
 
     @Getter
     @Setter
-    private FragmentMovieDetailsViewModel viewModel;
+    private MovieDetailsViewModel viewModel;
     private FragmentMovieDetailsBinding binding;
     private SimpleExoPlayer player;
     private final String YOUTUBE_URL = "https://www.youtube.com/watch?v=";
@@ -70,7 +73,7 @@ public class FragmentMovieDetails extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (viewModel == null) {
-            viewModel = ViewModelProviders.of(this).get(FragmentMovieDetailsViewModel.class);
+            viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
         }
         if (videoUrl == null || videoUrl.isEmpty()) {
             viewModel.getTrailers().onChangeOnce(this, trailers -> {
@@ -85,8 +88,12 @@ public class FragmentMovieDetails extends BaseFragment {
                             if (isAdded()) {
                                 if (ytFiles != null) {
                                     final int tag = 22;
-                                    String downloadUrl = ytFiles.get(tag).getUrl();
-                                    initializePlayer(downloadUrl);
+                                    if (ytFiles.get(tag) != null) {
+                                        String downloadUrl = ytFiles.get(tag).getUrl();
+                                        initializePlayer(downloadUrl);
+                                    } else {
+                                        Logger.d(Strings.Log.FAIL);
+                                    }
                                 }
                             }
 
@@ -104,7 +111,9 @@ public class FragmentMovieDetails extends BaseFragment {
         DefaultTrackSelector defaultTrackSelector = new DefaultTrackSelector();
         DefaultLoadControl defaultLoadControl = new DefaultLoadControl();
         player = ExoPlayerFactory.newSimpleInstance(getContext(), defaultRenderersFactory, defaultTrackSelector, defaultLoadControl);
-        binding.playerView.setPlayer(player);
+        binding.videoView.setShutterBackgroundColor(Color.TRANSPARENT);
+        binding.controls.setPlayer(player);
+        binding.videoView.setPlayer(player);
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(Ui.getActivity(), EXOPLAYER, defaultBandwidthMeter);
         final MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(videoUrl));

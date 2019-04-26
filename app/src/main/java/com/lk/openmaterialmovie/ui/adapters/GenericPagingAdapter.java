@@ -4,8 +4,10 @@
 
 package com.lk.openmaterialmovie.ui.adapters;
 
+import android.arch.paging.PagedListAdapter;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.recyclerview.extensions.AsyncDifferConfig;
+import android.support.v7.util.DiffUtil;
 import android.view.ViewGroup;
 
 import com.lk.openmaterialmovie.ui.viewholders.BasicViewHolder;
@@ -15,14 +17,22 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class GenericAdapter<T, E extends BasicViewHolder> extends RecyclerView.Adapter<E> {
+public abstract class GenericPagingAdapter<T, E extends BasicViewHolder> extends PagedListAdapter<T, E> {
     @Getter
     @Setter
     private List<T> items;
 
-    protected GenericAdapter(List<T> items) {
-        this.items = items;
+    protected GenericPagingAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
+        super(diffCallback);
     }
+
+    protected GenericPagingAdapter(@NonNull AsyncDifferConfig<T> config) {
+        super(config);
+    }
+
+/*    protected GenericPagingAdapter(List<T> items) {
+        this.items = items;
+    }*/
 
     public abstract E createViewHolder(ViewGroup parent);
 
@@ -55,9 +65,4 @@ public abstract class GenericAdapter<T, E extends BasicViewHolder> extends Recyc
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, items.size());
     }
-
-    public T getSelected(E holder) {
-        return items.get(holder.getAdapterPosition());
-    }
-
 }

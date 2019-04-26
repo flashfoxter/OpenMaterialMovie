@@ -5,20 +5,20 @@
 package com.lk.openmaterialmovie.ui.fragments;
 
 import com.lk.openmaterialmovie.Constants;
+import com.lk.openmaterialmovie.dto.MovieDto;
 import com.lk.openmaterialmovie.factories.ServiceFactory;
 import com.lk.openmaterialmovie.model.BaseViewModel;
 import com.lk.openmaterialmovie.network.MutableResponse;
 
-public class FragmentMovieDetailsViewModel extends BaseViewModel {
+public class MovieDetailsViewModel extends BaseViewModel {
 
-    public int movieId;
+    private MovieDto movieDto;
 
-    public FragmentMovieDetailsViewModel(int movieId) {
-        this.movieId = movieId;
+    public MovieDetailsViewModel(MovieDto movieDto) {
+        this.movieDto = movieDto;
     }
 
     MutableResponse getTrailers() {
-        return call(ServiceFactory.GET.getMovieService().getTrailers(movieId, Constants.KEY_THE_MOVIE_DB));
+        return call(ServiceFactory.GET.getMovieService().getTrailers(movieDto.getId(), Constants.KEY_THE_MOVIE_DB));
     }
-
 }
