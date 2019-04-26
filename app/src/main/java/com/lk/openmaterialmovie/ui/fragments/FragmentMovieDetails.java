@@ -31,6 +31,7 @@ import com.lk.openmaterialmovie.Strings;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
 import com.lk.openmaterialmovie.dto.TrailerDto;
 import com.lk.openmaterialmovie.dto.TrailersResponse;
+import com.lk.openmaterialmovie.helpers.Dialogue;
 import com.lk.openmaterialmovie.helpers.Ui;
 import com.lk.openmaterialmovie.log.Logger;
 
@@ -75,6 +76,8 @@ public class FragmentMovieDetails extends BaseFragment {
         if (viewModel == null) {
             viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
         }
+        binding.txtTitle.setText(viewModel.getMovieDto().title);
+        binding.txtReleaseDate.setText(viewModel.getMovieDto().release_date);
         if (videoUrl == null || videoUrl.isEmpty()) {
             viewModel.getTrailers().onChangeOnce(this, trailers -> {
                 TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();
@@ -82,16 +85,19 @@ public class FragmentMovieDetails extends BaseFragment {
                 if (results.length > 0) {
                     String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, results[0].getKey());
                     // TODO: 2019-04-25 Remove third party libs
+                    Ui.getActivity().progressShow();
                     new YouTubeExtractor(getContext()) {
                         @Override
                         public void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta vMeta) {
                             if (isAdded()) {
+                                Ui.getActivity().progressHide();
                                 if (ytFiles != null) {
                                     final int tag = 22;
                                     if (ytFiles.get(tag) != null) {
                                         String downloadUrl = ytFiles.get(tag).getUrl();
                                         initializePlayer(downloadUrl);
                                     } else {
+                                        Dialogue.show(R.string.common_error);
                                         Logger.d(Strings.Log.FAIL);
                                     }
                                 }

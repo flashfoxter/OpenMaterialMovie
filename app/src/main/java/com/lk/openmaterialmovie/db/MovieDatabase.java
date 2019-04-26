@@ -15,7 +15,7 @@ import com.lk.openmaterialmovie.dto.MovieDto;
 @Database(entities = {MovieDto.class}, version = 1, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "db2";
+    private static final String DB_NAME = "db3";
     // TODO: 2019-04-26 Check db naming
     //"movieDatabase.db";
     private static volatile MovieDatabase instance;

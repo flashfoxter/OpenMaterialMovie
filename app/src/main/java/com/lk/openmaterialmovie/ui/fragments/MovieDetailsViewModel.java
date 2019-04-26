@@ -10,8 +10,13 @@ import com.lk.openmaterialmovie.factories.ServiceFactory;
 import com.lk.openmaterialmovie.model.BaseViewModel;
 import com.lk.openmaterialmovie.network.MutableResponse;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class MovieDetailsViewModel extends BaseViewModel {
 
+    @Getter
+    @Setter
     private MovieDto movieDto;
 
     public MovieDetailsViewModel(MovieDto movieDto) {

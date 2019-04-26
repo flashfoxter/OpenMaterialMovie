@@ -30,7 +30,7 @@ public class MovieDto {
     @ColumnInfo(name = "title")
     public String title;
 
-    @Ignore
+    @ColumnInfo(name = "overview")
     public String overview;
 
     @Ignore
@@ -45,13 +45,13 @@ public class MovieDto {
     @Ignore
     public int[] genre_ids;
 
-    @Ignore
+    @ColumnInfo(name = "poster_path")
     public String poster_path;
 
     @Ignore
     public String backdrop_path;
 
-    @Ignore
+    @ColumnInfo(name = "release_date")
     public String release_date;
 
     @Ignore
