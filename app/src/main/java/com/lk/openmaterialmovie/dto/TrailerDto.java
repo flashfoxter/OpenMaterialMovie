@@ -9,13 +9,22 @@ import android.arch.persistence.room.PrimaryKey;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 //@Entity
-@Data
+
+@Getter
+@Setter
+//@AllArgsConstructor(onConstructor = @__({@Ignore}))
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity //Room annotation after lombok only
 public class TrailerDto {
     // TODO: 2019-04-26 Check working with lombock
-    //@PrimaryKey
+    @PrimaryKey
     private String id;
     private String site;
     private int size;

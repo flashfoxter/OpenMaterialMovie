@@ -11,16 +11,14 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.lk.openmaterialmovie.dto.MovieDto;
-import com.lk.openmaterialmovie.dto.MovieListResponse;
 
 import java.util.List;
 
 @Dao
 public interface MovieDao {
 
-
-    @Query("SELECT * FROM movie")
-    List<MovieDto> getAllRepos();
+    @Query("SELECT * FROM moviedto")
+    List<MovieDto> getAllMovies();
 
     @Insert
     void insert(MovieDto... repos);

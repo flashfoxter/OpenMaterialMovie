@@ -24,6 +24,17 @@ public class MainApplication extends BaseApplication {
     // TODO: 2019-04-25 Remove picasso var
     private Picasso picasso;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ServiceFactory.GET.init();
+        Ui.setApplication(this);
+        initImageLoader(this);
+        if (BuildConfig.DEBUG) {
+            initLeakCanary();
+        }
+    }
+
     private static void enabledStrictMode() {
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
                 //.detectAll() //
@@ -33,12 +44,6 @@ public class MainApplication extends BaseApplication {
                 .penaltyLog() //
                 .penaltyDeath() //
                 .build());
-    }
-
-    private void initImageLoader(Context context) {
-        if (picasso == null) {
-            getPicassoImageLoader(context);
-        }
     }
 
     private void getPicassoImageLoader(Context context) {
@@ -55,14 +60,9 @@ public class MainApplication extends BaseApplication {
         Picasso.setSingletonInstance(picasso);
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        ServiceFactory.GET.init();
-        Ui.setApplication(this);
-        initImageLoader(this);
-        if (BuildConfig.DEBUG) {
-            initLeakCanary();
+    private void initImageLoader(Context context) {
+        if (picasso == null) {
+            getPicassoImageLoader(context);
         }
     }
 

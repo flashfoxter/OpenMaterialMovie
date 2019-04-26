@@ -5,18 +5,22 @@
 package com.lk.openmaterialmovie.db;
 
 import android.arch.persistence.room.Database;
+import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.content.Context;
 
+import com.lk.openmaterialmovie.dao.MovieDao;
 import com.lk.openmaterialmovie.dto.MovieDto;
 
-//@Database(entities = { MovieDto.class }, version = 1)
+@Database(entities = {MovieDto.class}, version = 1, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
-    // TODO: 2019-04-26 Check room and lombock annotation works
-  /*  private static final String DB_NAME = "movieDatabase.db";
+    private static final String DB_NAME = "db";
+    // TODO: 2019-04-26 Check db naming
+    //"movieDatabase.db";
     private static volatile MovieDatabase instance;
 
-    static synchronized MovieDatabase getInstance(Context context) {
+    public static synchronized MovieDatabase getInstance(Context context) {
         if (instance == null) {
             instance = create(context);
         }
@@ -30,5 +34,5 @@ public abstract class MovieDatabase extends RoomDatabase {
                 DB_NAME).build();
     }
 
-    public abstract MovieDao getRepoDao();*/
+    public abstract MovieDao getMovieDao();
 }
