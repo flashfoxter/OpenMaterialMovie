@@ -12,8 +12,8 @@ import com.lk.openmaterialmovie.dto.MovieDto;
 import com.lk.openmaterialmovie.log.Logger;
 import com.lk.openmaterialmovie.ui.fragments.BaseFragment;
 import com.lk.openmaterialmovie.ui.fragments.FragmentMovieDetails;
-import com.lk.openmaterialmovie.ui.fragments.FragmentMoviesByGenre;
 import com.lk.openmaterialmovie.ui.fragments.FragmentMoviesByGenreTablet;
+import com.lk.openmaterialmovie.ui.fragments.FragmentMoviesList;
 import com.lk.openmaterialmovie.ui.fragments.MovieDetailsViewModel;
 
 import java.lang.reflect.Method;
@@ -73,7 +73,7 @@ public class Provider {
         if (Ui.isTablet()) {
             return new FragmentMoviesByGenreTablet();
         } else {
-            return new FragmentMoviesByGenre();
+            return new FragmentMoviesList();
         }
     }
 

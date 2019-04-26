@@ -35,10 +35,10 @@ public class FragmentMoviesByGenreTablet extends BaseFragment {
     }
 
     private void initByGenres() {
-        FragmentMoviesByGenre fragmentMoviesByGenre = new FragmentMoviesByGenre();
+        FragmentMoviesList fragmentMoviesList = new FragmentMoviesList();
         // TODO: 2019-04-25 Implement default selection
-        fragmentMoviesByGenre.setOnSelected(this::initDetails);
-        replaceChildFragment(R.id.container_list, this, fragmentMoviesByGenre);
+        fragmentMoviesList.setOnSelected(this::initDetails);
+        replaceChildFragment(R.id.container_list, this, fragmentMoviesList);
     }
 
     private void initDetails(MovieDto movieDto) {

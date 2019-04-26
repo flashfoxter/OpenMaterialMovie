@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lk.openmaterialmovie.R;
-import com.lk.openmaterialmovie.databinding.FragmentMoviesByGenreBinding;
+import com.lk.openmaterialmovie.databinding.FragmentMoviesListBinding;
 import com.lk.openmaterialmovie.dto.MovieDto;
 import com.lk.openmaterialmovie.enums.DecoratorType;
 import com.lk.openmaterialmovie.enums.PlaceHolderType;
@@ -28,13 +28,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-public class FragmentMoviesByGenre extends BaseFragment {
+public class FragmentMoviesList extends BaseFragment {
 
     @Getter
     @Setter
     private Consumer<MovieDto> onSelected;
     private MoviesListViewModel viewModel;
-    private FragmentMoviesByGenreBinding binding;
+    private FragmentMoviesListBinding binding;
     private GenericAdapter<MovieDto, MoviesViewHolder> adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<MovieDto> movieList;
@@ -44,7 +44,7 @@ public class FragmentMoviesByGenre extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_by_genre, container, false);
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_list, container, false);
             linearLayoutManager = new LinearLayoutManager(getContext());
             binding.recyclerMovies.setOnLoadMore(this::getMovies);
         }
@@ -83,7 +83,7 @@ public class FragmentMoviesByGenre extends BaseFragment {
             } else {
                 if (movies != null) {
                     movieList.addAll(movies);
-                    adapter.notifyItemRangeInserted(adapter.getItems().size(), movies.size() - 1);
+                    binding.recyclerMovies.post(() -> adapter.notifyItemRangeInserted(adapter.getItems().size(), movies.size() - 1));
                 }
             }
         });

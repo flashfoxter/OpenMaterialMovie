@@ -21,7 +21,9 @@ import android.util.AttributeSet;
 
 import com.lk.openmaterialmovie.MainActivity;
 import com.lk.openmaterialmovie.MainApplication;
+import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.ui.activities.BaseActivity;
+import com.lk.openmaterialmovie.ui.fragments.BaseFragment;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -90,5 +92,9 @@ public class Ui {
     public static boolean isTablet() {
         Configuration config = Ui.application.getResources().getConfiguration();
         return config.smallestScreenWidthDp >= 600;
+    }
+
+    public static BaseFragment getCurrentFragment() {
+        return (BaseFragment) Ui.getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     }
 }
