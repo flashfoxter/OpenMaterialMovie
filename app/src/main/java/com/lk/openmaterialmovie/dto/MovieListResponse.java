@@ -22,7 +22,7 @@ import lombok.Setter;
 public class MovieListResponse {
     private int page;
     private int total_pages;
-    private List<MovieDto> results;
+    private List<Movie> results;
     private int total_results;
 
 }

@@ -7,6 +7,10 @@ package com.lk.openmaterialmovie;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.GeneralLocation;
+import android.support.test.espresso.action.GeneralSwipeAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -52,6 +56,11 @@ public class BaseUiTest {
 
     public void recyclerClick(RecyclerView recyclerView) {
         onView(allOf(withId(recyclerView.getId()), isCompletelyDisplayed())).perform(click());
+    }
+
+    protected ViewAction swipeFromTopToBottom() {
+        return new GeneralSwipeAction(Swipe.FAST, GeneralLocation.TOP_CENTER,
+                GeneralLocation.BOTTOM_CENTER, Press.FINGER);
     }
 
 }

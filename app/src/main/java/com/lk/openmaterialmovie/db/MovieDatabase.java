@@ -10,14 +10,12 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.lk.openmaterialmovie.db.dao.MovieDao;
-import com.lk.openmaterialmovie.dto.MovieDto;
+import com.lk.openmaterialmovie.dto.Movie;
 
-@Database(entities = {MovieDto.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class}, version = 1, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "db3";
-    // TODO: 2019-04-26 Check db naming
-    //"movieDatabase.db";
+    private static final String DB_NAME = "db5";
     private static volatile MovieDatabase instance;
 
     public static synchronized MovieDatabase getInstance(Context context) {

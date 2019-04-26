@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Data
 @Entity //Room annotation after lombok only
-public class TrailerDto {
+public class Trailer {
     // TODO: 2019-04-26 Check working with lombock
     @PrimaryKey
     private String id;

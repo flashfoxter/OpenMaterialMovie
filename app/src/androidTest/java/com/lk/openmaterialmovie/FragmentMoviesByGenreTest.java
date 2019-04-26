@@ -1,5 +1,9 @@
 package com.lk.openmaterialmovie;
 
+import android.os.SystemClock;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.action.ViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -36,9 +40,9 @@ public class FragmentMoviesByGenreTest extends BaseUiTest {
 
         do {
             waitFor(3000);
-            recyclerScrollToEnd(recyclerView);
+            Espresso.onView(ViewMatchers.withId(R.id.recycler_movies)).perform(ViewActions.swipeUp());
             swipeCount += 1;
-            waitFor(3000);
+            SystemClock.sleep(3000);
             int openDetails = openDetailsRandom.nextInt(RANDOM_OPEN_DETAILS);
             if (openDetails == 1) {
                 recyclerClick(recyclerView);

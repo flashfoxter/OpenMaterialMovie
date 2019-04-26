@@ -2,7 +2,7 @@
  * Copyright (c) 2019. Levashkin Konstantin.
  */
 
-package com.lk.openmaterialmovie.model;
+package com.lk.openmaterialmovie.ui;
 
 import android.arch.lifecycle.ViewModel;
 

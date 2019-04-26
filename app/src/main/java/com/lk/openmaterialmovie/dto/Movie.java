@@ -23,7 +23,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Data
 @Entity //Room annotation after lombok only
-public class MovieDto {
+public class Movie {
     @PrimaryKey
     public Integer id;
 

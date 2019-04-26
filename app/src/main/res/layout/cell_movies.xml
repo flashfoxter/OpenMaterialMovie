@@ -7,19 +7,20 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/color_dark_background"
+
+        android:paddingBottom="@dimen/padding_8">
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="5dp"
             app:cardElevation="0.7dp"
             app:cardMaxElevation="1dp"
             app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="10dp"
             app:contentPaddingBottom="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,35 +28,53 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.lk.openmaterialmovie.ui.widgets.images.BaseImage
-                    android:id="@+id/img_cover"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/movie_placeholder"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_title"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/img_cover"
-                    android:layout_marginLeft="@dimen/margin_4"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_vertical"
-                    android:textSize="18sp"
-                    app:layout_constraintLeft_toRightOf="@id/img_cover"
-                    app:layout_constraintTop_toTopOf="@id/img_cover"
-                    tools:text="@string/title" />
-
-            </android.support.constraint.ConstraintLayout>
+            <com.lk.openmaterialmovie.ui.widgets.images.BaseImage
+                android:id="@+id/img_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/movie_placeholder" />
 
         </android.support.v7.widget.CardView>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/cardView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@id/cardView"
+            app:layout_constraintTop_toBottomOf="@id/cardView">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/title" />
+
+            <TextView
+                android:id="@+id/txt_release_date"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_4"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minLines="1"
+                android:textColor="@color/grey_light"
+                android:textSize="8sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_title"
+                tools:text="@string/release_date" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
 

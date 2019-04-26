@@ -9,7 +9,7 @@ import android.arch.lifecycle.LiveData;
 import com.lk.openmaterialmovie.Constants;
 import com.lk.openmaterialmovie.db.MovieDatabase;
 import com.lk.openmaterialmovie.db.dao.MovieDao;
-import com.lk.openmaterialmovie.dto.MovieDto;
+import com.lk.openmaterialmovie.dto.Movie;
 import com.lk.openmaterialmovie.dto.MovieListResponse;
 import com.lk.openmaterialmovie.factories.ServiceFactory;
 import com.lk.openmaterialmovie.helpers.Ui;
@@ -42,7 +42,7 @@ public class MoviesRepository extends BaseRepository {
         this.movieDao = MovieDatabase.getInstance(Ui.getBaseContext()).getMovieDao();
     }
 
-    public LiveData<List<MovieDto>> getMovies(int page) {
+    public LiveData<List<Movie>> getMovies(int page) {
         refreshData(page);
         // Returns a LiveData object directly from the database.
         return movieDao.getAll();
@@ -69,7 +69,7 @@ public class MoviesRepository extends BaseRepository {
             //Response<User> response =
             try {
                 Response<MovieListResponse> movieListResponseResponse = movieService.getMoviesByGenres(Constants.DEFAULT_GENRE, Constants.KEY_THE_MOVIE_DB, page).execute();
-                List<MovieDto> results = new ArrayList<>();
+                List<Movie> results = new ArrayList<>();
                 if (movieListResponseResponse.body() != null) {
                     results = movieListResponseResponse.body().getResults();
                 }

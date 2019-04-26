@@ -11,5 +11,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class TrailersResponse {
     private int id;
-    private TrailerDto[] results;
+    private Trailer[] results;
 }

@@ -6,6 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.lk.openmaterialmovie.ui.fragments.MovieDetailsViewModel" />
+
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +22,7 @@
         <RelativeLayout
             android:id="@+id/container_player"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_200"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@android:color/white"
-
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:text="@{viewModel.movie.title}"
                 tools:text="@string/title" />
 
             <TextView
@@ -61,9 +69,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_8"
                 android:textColor="@color/grey_light"
-
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:text="@{viewModel.movie.release_date}"
                 tools:text="@string/release_date" />
+
+            <TextView
+                android:id="@+id/txt_overview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:text="@{viewModel.movie.overview}"
+                android:textColor="@color/grey_light"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:text="@string/overview" />
 
         </LinearLayout>
 

@@ -13,29 +13,29 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.lk.openmaterialmovie.dto.MovieDto;
+import com.lk.openmaterialmovie.dto.Movie;
 
 import java.util.List;
 
 @Dao
-public abstract class MovieDao extends BaseDao<MovieDto> {
+public abstract class MovieDao extends BaseDao<Movie> {
 
-    @Query("SELECT * FROM moviedto")
-    public abstract LiveData<List<MovieDto>> getAll();
+    @Query("SELECT * FROM Movie")
+    public abstract LiveData<List<Movie>> getAll();
 
-    @Query("SELECT * FROM moviedto")
-    public abstract DataSource.Factory<Integer, MovieDto> getAllPaged();
+    @Query("SELECT * FROM Movie")
+    public abstract DataSource.Factory<Integer, Movie> getAllPaged();
 
     @Insert
-    public abstract void insert(MovieDto... items);
+    public abstract void insert(Movie... items);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insertCollection(List<MovieDto> items);
+    public abstract void insertCollection(List<Movie> items);
 
     @Update
-    public abstract void update(MovieDto... items);
+    public abstract void update(Movie... items);
 
     @Delete
-    public abstract void delete(MovieDto... items);
+    public abstract void delete(Movie... items);
 
 }

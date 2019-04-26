@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lk.openmaterialmovie.R;
-import com.lk.openmaterialmovie.dto.MovieDto;
+import com.lk.openmaterialmovie.dto.Movie;
 import com.lk.openmaterialmovie.helpers.Provider;
 
 import static com.lk.openmaterialmovie.navigator.Navigate.replaceChildFragment;
@@ -41,8 +41,8 @@ public class FragmentMoviesByGenreTablet extends BaseFragment {
         replaceChildFragment(R.id.container_list, this, fragmentMoviesList);
     }
 
-    private void initDetails(MovieDto movieDto) {
-        FragmentMovieDetails fragmentMovieDetails = (FragmentMovieDetails) Provider.getFragmentMovieDetails(movieDto);
+    private void initDetails(Movie movie) {
+        FragmentMovieDetails fragmentMovieDetails = (FragmentMovieDetails) Provider.getFragmentMovieDetails(movie);
         replaceChildFragment(R.id.container_details, this, fragmentMovieDetails);
     }
 }

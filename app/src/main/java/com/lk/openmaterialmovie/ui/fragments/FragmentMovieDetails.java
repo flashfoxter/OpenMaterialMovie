@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.Strings;
 import com.lk.openmaterialmovie.databinding.FragmentMovieDetailsBinding;
-import com.lk.openmaterialmovie.dto.TrailerDto;
+import com.lk.openmaterialmovie.dto.Trailer;
 import com.lk.openmaterialmovie.dto.TrailersResponse;
 import com.lk.openmaterialmovie.helpers.Dialogue;
 import com.lk.openmaterialmovie.helpers.Ui;
@@ -66,6 +66,7 @@ public class FragmentMovieDetails extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false);
+            binding.setViewModel(viewModel);
         }
         return binding.getRoot();
     }
@@ -75,13 +76,12 @@ public class FragmentMovieDetails extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         if (viewModel == null) {
             viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
+
         }
-        binding.txtTitle.setText(viewModel.getMovieDto().title);
-        binding.txtReleaseDate.setText(viewModel.getMovieDto().release_date);
         if (videoUrl == null || videoUrl.isEmpty()) {
             viewModel.getTrailers().onChangeOnce(this, trailers -> {
                 TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();
-                TrailerDto[] results = trailersResponse.getResults();
+                Trailer[] results = trailersResponse.getResults();
                 if (results.length > 0) {
                     String urlWithKey = MessageFormat.format("{0}{1}", YOUTUBE_URL, results[0].getKey());
                     // TODO: 2019-04-25 Remove third party libs
@@ -166,5 +166,4 @@ public class FragmentMovieDetails extends BaseFragment {
         super.onResume();
         startPlayer();
     }
-
 }

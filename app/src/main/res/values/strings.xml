@@ -8,7 +8,9 @@
     <string name="common_unexpectedError">An unexpected error has occurred. Please try again or contact support if the problem persists.</string>
 
     <string name="title">Title</string>
-    <string name="release_date">Release: 20.02.2044</string>
+    <string name="release_date">20.02.2044</string>
+    <string name="overview">Long description of movie</string>
+
     <string name="empty_state_movie">Please select movie from lsit</string>
 
 </resources>

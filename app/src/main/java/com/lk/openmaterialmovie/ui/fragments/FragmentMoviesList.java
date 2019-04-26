@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Consumer;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.databinding.FragmentMoviesListBinding;
-import com.lk.openmaterialmovie.dto.MovieDto;
+import com.lk.openmaterialmovie.dto.Movie;
 import com.lk.openmaterialmovie.enums.DecoratorType;
 import com.lk.openmaterialmovie.enums.PlaceHolderType;
 import com.lk.openmaterialmovie.helpers.Provider;
@@ -32,20 +32,26 @@ public class FragmentMoviesList extends BaseFragment {
 
     @Getter
     @Setter
-    private Consumer<MovieDto> onSelected;
+    private Consumer<Movie> onSelected;
     private MoviesListViewModel viewModel;
     private FragmentMoviesListBinding binding;
-    private GenericAdapter<MovieDto, MoviesViewHolder> adapter;
-    private LinearLayoutManager linearLayoutManager;
-    private List<MovieDto> movieList;
+    private GenericAdapter<Movie, MoviesViewHolder> adapter;
+    private GridLayoutManager layoutManager;
+    private List<Movie> movieList;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_list, container, false);
-            linearLayoutManager = new LinearLayoutManager(getContext());
+            layoutManager = new GridLayoutManager(getContext(), 2);
             binding.recyclerMovies.setOnLoadMore(this::getMovies);
         }
         return binding.getRoot();
@@ -67,7 +73,7 @@ public class FragmentMoviesList extends BaseFragment {
                 adapter = binding.recyclerMovies.initList(MoviesViewHolder.class, movieList, holderCreate ->
                                 holderCreate.itemView.setOnClickListener(v -> {
                                     // TODO: 2019-04-25 Do not add if, use Strategy pattern
-                                    MovieDto selectedMovie = adapter.getSelected(holderCreate);
+                                    Movie selectedMovie = adapter.getSelected(holderCreate);
                                     if (!Ui.isTablet()) {
                                         Navigate.toFragment(this, Provider.getFragmentMovieDetails(selectedMovie));
                                     } else {
@@ -78,12 +84,13 @@ public class FragmentMoviesList extends BaseFragment {
                                 }),
                         (holderBind, item) -> {
                             holderBind.b.txtTitle.setText(item.getTitle());
+                            holderBind.b.txtReleaseDate.setText(item.getRelease_date());
                             holderBind.b.imgCover.load(item.getPoster_path(), PlaceHolderType.MOVIE);
-                        }, linearLayoutManager, DecoratorType.NO_TOP);
+                        }, layoutManager, DecoratorType.NO_TOP);
             } else {
                 if (movies != null) {
                     movieList.addAll(movies);
-                    binding.recyclerMovies.post(() -> adapter.notifyItemRangeInserted(adapter.getItems().size(), movies.size() - 1));
+                    adapter.notifyItemRangeInserted(adapter.getItems().size(), movies.size() - 1);
                 }
             }
         });
