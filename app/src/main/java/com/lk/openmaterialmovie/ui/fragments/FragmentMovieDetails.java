@@ -58,6 +58,7 @@ public class FragmentMovieDetails extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showBack();
         setRetainInstance(true);
     }
 
@@ -76,8 +77,8 @@ public class FragmentMovieDetails extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         if (viewModel == null) {
             viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
-
         }
+        setTitle(viewModel.getMovie().title);
         if (videoUrl == null || videoUrl.isEmpty()) {
             viewModel.getTrailers().onChangeOnce(this, trailers -> {
                 TrailersResponse trailersResponse = (TrailersResponse) trailers.getData();

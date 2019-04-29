@@ -13,4 +13,6 @@
 
     <string name="empty_state_movie">Please select movie from lsit</string>
 
+    <string name="filter_popular">Most Popular</string>
+
 </resources>

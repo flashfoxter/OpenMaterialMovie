@@ -64,7 +64,9 @@ public class FragmentMoviesList extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        hideBack();
         viewModel = ViewModelProviders.of(this).get(MoviesListViewModel.class);
+        setTitle(R.string.filter_popular);
         adapter = new MoviePagingAdapter(this);
         observeNetworkState();
         observerMovies();

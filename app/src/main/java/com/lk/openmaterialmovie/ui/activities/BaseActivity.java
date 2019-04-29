@@ -11,6 +11,8 @@ import android.os.PowerManager;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.lk.openmaterialmovie.R;
 import com.lk.openmaterialmovie.helpers.Ui;
@@ -35,6 +37,8 @@ public class BaseActivity extends AppCompatActivity {
 
     @Inject
     public Navigator navigator;
+
+    public Toolbar toolbar;
 
     @Getter
     @Setter
@@ -68,6 +72,15 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
     }
 
+    // TODO: 2019-04-29 Add own safe abstract layer
+    public void setTitleText(int stringId) {
+        getSupportActionBar().setTitle(stringId);
+    }
+
+    // TODO: 2019-04-29 Add own safe abstract layer
+    public void setTitleText(String string) {
+        getSupportActionBar().setTitle(string);
+    }
 
     public static void riseAndShine(Activity activity) {
         KeyguardManager keyguardManager = (KeyguardManager) activity.getSystemService(KEYGUARD_SERVICE);
@@ -83,5 +96,16 @@ public class BaseActivity extends AppCompatActivity {
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP | ON_AFTER_RELEASE, "Wakeup!");
         wakeLock.acquire();
         wakeLock.release();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -13,6 +13,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         progress = new ProgressImpl(findViewById(R.id.progress));
         if (savedInstanceState == null) {
             Navigate.toFragment(null, Provider.getFragmentMoviesByGenre());

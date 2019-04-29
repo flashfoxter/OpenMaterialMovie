@@ -9,4 +9,5 @@
         <attr name="recycler_bottom_padding_value" format="integer" />
     </declare-styleable>
 
+    <attr name="colorBackground" format="color" />
 </resources>
