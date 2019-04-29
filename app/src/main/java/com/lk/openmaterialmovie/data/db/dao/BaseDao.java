@@ -2,7 +2,7 @@
  * Copyright (c) 2019. Levashkin Konstantin.
  */
 
-package com.lk.openmaterialmovie.db.dao;
+package com.lk.openmaterialmovie.data.db.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

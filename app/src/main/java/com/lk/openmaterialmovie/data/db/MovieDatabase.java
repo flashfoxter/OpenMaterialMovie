@@ -2,14 +2,14 @@
  * Copyright (c) 2019. Levashkin Konstantin.
  */
 
-package com.lk.openmaterialmovie.db;
+package com.lk.openmaterialmovie.data.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.lk.openmaterialmovie.db.dao.MovieDao;
+import com.lk.openmaterialmovie.data.db.dao.MovieDao;
 import com.lk.openmaterialmovie.dto.Movie;
 
 @Database(entities = {Movie.class}, version = 1, exportSchema = false)

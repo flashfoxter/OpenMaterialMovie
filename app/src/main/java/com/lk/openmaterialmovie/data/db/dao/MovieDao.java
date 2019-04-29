@@ -2,7 +2,7 @@
  * Copyright (c) 2019. Levashkin Konstantin.
  */
 
-package com.lk.openmaterialmovie.db.dao;
+package com.lk.openmaterialmovie.data.db.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;
@@ -22,6 +22,9 @@ public abstract class MovieDao extends BaseDao<Movie> {
 
     @Query("SELECT * FROM Movie")
     public abstract LiveData<List<Movie>> getAll();
+
+    @Query("SELECT * FROM Movie")
+    public abstract List<Movie> getAllSync();
 
     @Query("SELECT * FROM Movie")
     public abstract DataSource.Factory<Integer, Movie> getAllPaged();

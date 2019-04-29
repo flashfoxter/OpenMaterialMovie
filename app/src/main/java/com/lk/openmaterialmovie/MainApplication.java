@@ -14,6 +14,9 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -47,13 +50,17 @@ public class MainApplication extends BaseApplication {
     }
 
     private void getPicassoImageLoader(Context context) {
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(chain -> {
-            Request newRequest = chain.request()
-                    .newBuilder()
-                    .addHeader(HEADER_AUTHORIZATION, ApiClient.getAuthHeaderValue())
-                    .build();
-            return chain.proceed(newRequest);
-        }).build();
+        File cacheDir = new File(context.getCacheDir(), "image-cache");
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cache(new Cache(cacheDir, 128 * 1024 * 1024))
+                .addInterceptor(chain -> {
+                    Request newRequest = chain.request()
+                            .newBuilder()
+                            .addHeader(HEADER_AUTHORIZATION, ApiClient.getAuthHeaderValue())
+                            .build();
+                    return chain.proceed(newRequest);
+                }).build();
+
         picasso = new Picasso.Builder(context)
                 .downloader(new OkHttp3Downloader(client))
                 .build();

@@ -11,18 +11,25 @@
         android:layout_height="match_parent"
         android:background="@color/color_dark_background">
 
-        <com.lk.openmaterialmovie.ui.controls.CoreRecycler
-            android:id="@+id/recycler_movies"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemcount="3"
-            tools:listitem="@layout/cell_movies" />
+            android:layout_height="match_parent">
+
+            <com.lk.openmaterialmovie.ui.controls.CoreRecycler
+                android:id="@+id/recycler_movies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemcount="3"
+                tools:listitem="@layout/cell_movies" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.constraint.ConstraintLayout>
 </layout>
